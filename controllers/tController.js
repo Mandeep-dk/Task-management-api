@@ -1,24 +1,24 @@
 const asyncHandler = require("express-async-handler");
-const Tasks = require("../models/tModels");
+const Task = require("../models/tModels");
 
-const addTasks = asyncHandler(async(req, res, next)=>{
-    const tasks = new Tasks({
+const addTask = asyncHandler(async(req, res, next)=>{
+    const task = new Task({
         task: req.body.task,
         description: req.body.description,
         dueDate: req.body.dueDate
     });
     try{
-        await Tasks.create(tasks);
+        await Task.create(task);
     }catch(e){
         res.status(400);
         next(e);
     }
-    res.status(201).json(tasks);
+    res.status(201).json(task);
 });
 
-const updateTasks = asyncHandler(async(req, res, next)=>{
+const updateTask = asyncHandler(async(req, res, next)=>{
     try{
-        let updatedTask = await Tasks.findOneAndUpdate(
+        let updatedTask = await Task.findOneAndUpdate(
             { _id: req.params.id },
             { $set: req.body },
             { new: true }
@@ -32,7 +32,7 @@ const updateTasks = asyncHandler(async(req, res, next)=>{
 
 const getAllTasks = asyncHandler(async(req, res, next)=>{
     try{
-        let tasks = await Tasks.find();
+        let tasks = await Task.find();
         res.status(200).json(tasks);
     }catch(e){
         res.status(404);
@@ -41,9 +41,9 @@ const getAllTasks = asyncHandler(async(req, res, next)=>{
     
 });
 
-const getTasks = asyncHandler(async(req, res, next)=>{
+const getTask = asyncHandler(async(req, res, next)=>{
     try{
-        let task = await Tasks.findById(req.params.id);
+        let task = await Task.findById(req.params.id);
         res.status(200).json(task)
     }catch(e){
         res.status(404);
@@ -51,9 +51,9 @@ const getTasks = asyncHandler(async(req, res, next)=>{
     }
 });
 
-const deleteTasks = asyncHandler(async(req, res, next)=>{
+const deleteTask = asyncHandler(async(req, res, next)=>{
     try{
-        await Tasks.findByIdAndDelete(req.params.id);
+        await Task.findByIdAndDelete(req.params.id);
         res.status(200).json({message: "Task deleted successfully"});
     }catch(e){
         res.status(404);
@@ -61,4 +61,4 @@ const deleteTasks = asyncHandler(async(req, res, next)=>{
     }
 })
 
-module.exports = {addTasks, updateTasks, getAllTasks, getTasks,deleteTasks};
+module.exports = {addTask, updateTask, getAllTasks, getTask, deleteTask};
