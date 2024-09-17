@@ -54,7 +54,7 @@ const getTasks = asyncHandler(async(req, res, next)=>{
 const deleteTasks = asyncHandler(async(req, res, next)=>{
     try{
         await Tasks.findByIdAndDelete(req.params.id);
-        res.status(200).json({message: "User deleted successfully"});
+        res.status(200).json({message: "Task deleted successfully"});
     }catch(e){
         res.status(404);
         next(new Error(`Task not found: ${req.params.id}`));
